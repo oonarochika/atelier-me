@@ -8,36 +8,25 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-      background: #F7F3EE;
-      color: #3A2A1E;
-      min-height: 100vh;
-      padding: 2rem 1rem 4rem;
+      background: #F7F3EE; color: #3A2A1E;
+      min-height: 100vh; padding: 2rem 1rem 4rem;
     }
     .wrap { max-width: 1100px; margin: 0 auto; }
-
-    /* ヘッダー */
     .header { text-align: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #E8DDD0; }
     .logo-label { font-size: 11px; letter-spacing: 0.15em; color: #B09A84; text-transform: uppercase; margin-bottom: 6px; }
     .logo-title { font-size: 32px; font-weight: 500; color: #6B4F3A; letter-spacing: 0.04em; margin: 0 0 4px; }
     .logo-sub { font-size: 13px; color: #A08878; }
     .rainbow-bar { display: flex; height: 4px; border-radius: 4px; overflow: hidden; margin: 14px auto 0; width: 120px; opacity: 0.7; }
     .rainbow-bar span { flex: 1; }
-
-    /* 検索 */
     .search-row { display: flex; gap: 10px; margin-bottom: 1.5rem; align-items: center; }
     .search-row input {
       flex: 1; border-radius: 30px; border: 1px solid #DDD0C4;
       background: #FAF7F3; padding: 9px 18px; font-size: 14px;
-      color: #3A2A1E; outline: none;
-      font-family: inherit;
+      color: #3A2A1E; outline: none; font-family: inherit;
     }
     .search-row input:focus { border-color: #C4A898; }
     .count { font-size: 12px; color: #B09A84; white-space: nowrap; letter-spacing: 0.05em; }
-
-    /* グリッド */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; align-items: start; }
-
-    /* カード */
     .card { background: #FDFAF7; border-radius: 16px; border: 1px solid #E8DDD0; overflow: hidden; }
     .card-header { padding: 22px 22px 16px; border-bottom: 1px solid #EDE4DA; background: #FAF5EF; position: relative; }
     .accent-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; display: flex; }
@@ -52,25 +41,18 @@
     .pills { display: flex; flex-wrap: wrap; gap: 5px; }
     .pill { font-size: 11px; padding: 2px 9px; border-radius: 20px; border: 1px solid #DDD0C4; color: #7A5C48; background: #FFF8F2; }
     .pill.ai { border-color: #C8D8EE; color: #4A6A8A; background: #F2F7FD; }
-
-    /* 本文 */
     .body { padding: 0; }
     .section { padding: 14px 22px; border-bottom: 1px solid #EDE4DA; }
     .section:last-child { border-bottom: none; }
     .sec-label { font-size: 10px; letter-spacing: 0.12em; color: #B09A84; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
     .sec-text { font-size: 13px; color: #5A4232; line-height: 1.85; white-space: pre-wrap; }
-
-    /* メッセージ */
     .message-section { padding: 16px 22px 20px; background: #FFF8F2; border-top: 1px solid #EDE4DA; }
     .message-label { font-size: 10px; letter-spacing: 0.12em; color: #B09A84; text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
     .message-text { font-size: 13px; color: #5A4232; line-height: 1.85; font-style: italic; white-space: pre-wrap; }
     .message-text::before { content: '\201C'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-right: 2px; }
     .message-text::after { content: '\201D'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-left: 2px; }
-
-    /* ローディング・エラー */
     .loading { text-align: center; padding: 4rem; color: #B09A84; font-size: 14px; }
     .error { text-align: center; padding: 2rem; color: #B09A84; font-size: 13px; background: #FAF5EF; border-radius: 12px; line-height: 1.8; }
-
     @media (max-width: 600px) {
       .grid { grid-template-columns: 1fr; }
       .logo-title { font-size: 26px; }
@@ -93,22 +75,16 @@
       <span style="background:#B87AE0"></span>
     </div>
   </header>
-
   <div class="search-row">
     <input type="text" id="searchInput" placeholder="名前・キーワードで検索" oninput="filterCards()" />
     <span class="count" id="countLabel"></span>
   </div>
-
   <div id="cardGrid" class="grid">
     <div class="loading">メンバー情報を読み込み中…</div>
   </div>
 </div>
-
 <script>
-  // ▼▼▼ スプレッドシートIDをここに入れる ▼▼▼
   const SHEET_ID = '1r3KConc8_VX_ZZ1XTTR0JeRUzSRs3ZNEpzxY-jaeNQE';
-  // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-
   const COLORS = [
     ["#E8837A","#E8B07A","#E8D87A"],
     ["#8DC87A","#7AB8E8","#7A85E0"],
@@ -117,7 +93,6 @@
     ["#E8D87A","#B87AE0","#8DC87A"],
     ["#7A85E0","#E8837A","#7AB8E8"],
   ];
-
   let allMembers = [];
 
   async function loadSheet() {
@@ -130,13 +105,24 @@
 
   function parseCSV(text) {
     const lines = text.trim().split('\n');
-    const headers = parseCSVLine(lines[0]);
-    return lines.slice(1).map(line => {
-      const vals = parseCSVLine(line);
-      const obj = {};
-      headers.forEach((h, i) => obj[h.trim().replace(/^"|"$/g,'')] = (vals[i] || '').trim().replace(/^"|"$/g,''));
-      return obj;
-    }).filter(r => r['Discord名を教えてください']);
+    const rawHeaders = parseCSVLine(lines[0]);
+    const headers = rawHeaders.map(h => h.trim().replace(/^"|"$/g,''));
+    return lines.slice(1)
+      .filter(line => line.trim().length > 0)
+      .map(line => {
+        const vals = parseCSVLine(line);
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = (vals[i] || '').trim().replace(/^"|"$/g,'');
+        });
+        return obj;
+      })
+      .filter(r => {
+        const ts = r['タイムスタンプ'] || '';
+        const name = r['Discord名を教えてください'] || '';
+        // タイムスタンプが日付形式で、Discord名が1文字以上あるものだけ有効
+        return ts.match(/\d{4}\/\d{2}\/\d{2}/) && name.length > 0;
+      });
   }
 
   function parseCSVLine(line) {
@@ -161,42 +147,40 @@
 
   function buildCard(m, i) {
     const colors = COLORS[i % COLORS.length];
-    const name      = m['Discord名を教えてください'] || '';
-    const age       = m['年代'] || '';
-    const from      = m['出身地'] || '';
-    const live      = m['住まい（現在地）'] || '';
-    const workstyle = m['現在の働き方は？'] || '';
-    const joinDate  = m['図解デザイナー講座の入会時期は？（例：2025年4月）'] || '';
-    const career    = m['これまでの職歴'] || '';
-    const work      = m['現在の仕事内容は？'] || '';
-    const aiRaw     = m['よく使うAI'] || '';
-    const goalBefore= m['どんなこと目指して講座に入った？'] || '';
-    const goalNow   = m['今はどんなことを目指していますか？'] || '';
-    const trouble   = m['今の悩み、課題は？'] || '';
-    const strength  = m['長所・得意なこと'] || '';
-    const weakness  = m['短所・苦手なこと'] || '';
-    const hobby     = m['趣味・好きなこと'] || '';
-    const message   = m['Atelier Meのみんなへメッセージ'] || '';
+    const name       = m['Discord名を教えてください'] || '';
+    const age        = m['年代'] || '';
+    const from       = m['出身地'] || '';
+    const live       = m['住まい（現在地）'] || '';
+    const workstyle  = m['現在の働き方は？'] || '';
+    const joinDate   = m['図解デザイナー講座の入会時期は？（例：2025年4月）'] || '';
+    const career     = m['これまでの職歴'] || '';
+    const work       = m['現在の仕事内容は？'] || '';
+    const aiRaw      = m['よく使うAI'] || '';
+    const goalBefore = m['どんなこと目指して講座に入った？'] || '';
+    const goalNow    = m['今はどんなことを目指していますか？'] || '';
+    const trouble    = m['今の悩み、課題は？'] || '';
+    const strength   = m['長所・得意なこと'] || '';
+    const weakness   = m['短所・苦手なこと'] || '';
+    const hobby      = m['趣味・好きなこと'] || '';
+    const message    = m['Atelier Meのみんなへメッセージ'] || '';
 
     const aiTags   = aiRaw.split(/[,、，]/).map(s => s.trim()).filter(Boolean);
     const workTags = workstyle.split(/[,、，]/).map(s => s.trim()).filter(Boolean);
 
     const sections = [
-      joinDate    && { label: '入会時期',                         text: joinDate },
-      career      && { label: 'これまでの職歴',                   text: career },
-      work        && { label: '現在の仕事内容',                   text: work },
+      joinDate    && { label: '入会時期',                             text: joinDate },
+      career      && { label: 'これまでの職歴',                       text: career },
+      work        && { label: '現在の仕事内容',                       text: work },
       goalBefore  && { label: '講座に入ったきっかけ・目指していたこと', text: goalBefore },
-      goalNow     && { label: '今目指していること',               text: goalNow },
-      trouble     && { label: '今の悩み・課題',                   text: trouble },
-      strength    && { label: '長所・得意なこと',                 text: strength },
-      weakness    && { label: '短所・苦手なこと',                 text: weakness },
-      hobby       && { label: '趣味・好きなこと',                 text: hobby },
+      goalNow     && { label: '今目指していること',                   text: goalNow },
+      trouble     && { label: '今の悩み・課題',                       text: trouble },
+      strength    && { label: '長所・得意なこと',                     text: strength },
+      weakness    && { label: '短所・苦手なこと',                     text: weakness },
+      hobby       && { label: '趣味・好きなこと',                     text: hobby },
     ].filter(Boolean);
 
-    const searchText = [name,age,from,live,workstyle,career,work,aiRaw,goalBefore,goalNow,trouble,strength,weakness,hobby,message].join(' ').toLowerCase();
-
     return `
-      <article class="card" data-search="${esc(searchText)}">
+      <article class="card">
         <div class="card-header">
           <div class="accent-bar">${colors.map(c=>`<span style="background:${c};opacity:0.65"></span>`).join('')}</div>
           <div class="name-row">

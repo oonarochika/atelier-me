@@ -50,7 +50,7 @@
     .message-label { font-size: 10px; letter-spacing: 0.12em; color: #B09A84; text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
     .message-text { font-size: 13px; color: #5A4232; line-height: 1.85; font-style: italic; white-space: pre-wrap; }
     .message-text::before { content: '\201C'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-right: 2px; }
-    .message-text::after { content: '\201D'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-left: 2px; }
+    .message-text::after { content: '\201D'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-left: -2px; }
     .loading { text-align: center; padding: 4rem; color: #B09A84; font-size: 14px; }
     .error { text-align: center; padding: 2rem; color: #B09A84; font-size: 13px; background: #FAF5EF; border-radius: 12px; line-height: 1.8; }
     @media (max-width: 600px) {
@@ -120,7 +120,7 @@
       .filter(r => {
         const ts = r['タイムスタンプ'] || '';
         const name = r['Discord名を教えてください'] || '';
-        return ts.match(/\d{4}\/\d{2}\/\d{2}/) && name.length > 0;
+        return ts.length > 0 && name.length > 0;
       });
   }
 
@@ -144,33 +144,25 @@
     return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function findVal(m, keys) {
-    for (const k of keys) {
-      if (m[k] && m[k].length > 0) return m[k];
-    }
-    return '';
-  }
-
   function buildCard(m, i) {
     const colors = COLORS[i % COLORS.length];
 
-    // スプレッドシートの列名に合わせて複数候補で検索
-    const name       = findVal(m, ['Discord名を教えてください', 'Discord名']);
-    const age        = findVal(m, ['年代', '年齢']);
-    const from       = findVal(m, ['出身地']);
-    const live       = findVal(m, ['住まい（現在地）', '住まい', '現在地']);
-    const workstyle  = findVal(m, ['現在の働き方は？', '今の働き方', '働き方']);
-    const joinDate   = findVal(m, ['図解デザイナー講座の入会時 ', '図解デザイナー講座の入会時期は？（例：2025年4月）', '図解デザイナー講座の入会時期']);
-    const career     = findVal(m, ['これまでの職歴', 'お仕事の経歴', '職歴']);
-    const work       = findVal(m, ['現在の仕事内容は？', '今の主な仕事内容', '仕事内容']);
-    const aiRaw      = findVal(m, ['よく使うAI', '使ってるAI']);
-    const goalBefore = findVal(m, ['どんなこと目指して講座に入った？', '講座に入ったきっかけ']);
-    const goalNow    = findVal(m, ['今はどんなことを目指していますか？', '今はどんなこと目指してる？', '今目指していること']);
-    const trouble    = findVal(m, ['今の悩み、課題は？', '今の悩み・課題は？', 'いまの悩み・課題は？']);
-    const strength   = findVal(m, ['長所・得意なこと', 'あなたの長所']);
-    const weakness   = findVal(m, ['短所・苦手なこと', 'あなたの短所']);
-    const hobby      = findVal(m, ['趣味・好きなこと']);
-    const message    = findVal(m, ['Atelier Meのみんなへ', 'Atelier Meのみんなへメッセージ', 'みんなへメッセージ']);
+    const name       = m['Discord名を教えてください'] || '';
+    const age        = m['年代'] || '';
+    const from       = m['出身地'] || '';
+    const live       = m['住まい（現在地）'] || '';
+    const workstyle  = m['現在の働き方は？'] || '';
+    const joinDate   = m['図解デザイナー講座の入会時期は？（例：2025年4月）'] || '';
+    const career     = m['これまでの職歴'] || '';
+    const work       = m['現在の仕事内容は？'] || '';
+    const aiRaw      = m['よく使うAI'] || '';
+    const goalBefore = m['どんなこと目指して講座に入った？'] || '';
+    const goalNow    = m['今はどんなことを目指していますか？'] || '';
+    const trouble    = m['今の悩み、課題は？'] || '';
+    const strength   = m['長所・得意なこと'] || '';
+    const weakness   = m['短所・苦手なこと'] || '';
+    const hobby      = m['趣味・好きなこと'] || '';
+    const message    = m['Atelier Meのみんなへメッセージ'] || '';
 
     const aiTags   = aiRaw.split(/[,、，]/).map(s => s.trim()).filter(Boolean);
     const workTags = workstyle.split(/[,、，]/).map(s => s.trim()).filter(Boolean);

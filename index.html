@@ -44,10 +44,30 @@
     .body { padding: 0; }
     .section { padding: 14px 22px; border-bottom: 1px solid #EDE4DA; }
     .section:last-child { border-bottom: none; }
-    .sec-label { font-size: 10px; letter-spacing: 0.12em; color: #B09A84; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
+    .sec-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: #6B4F3A;
+      border-radius: 20px;
+      padding: 3px 11px;
+      margin-bottom: 8px;
+    }
     .sec-text { font-size: 13px; color: #5A4232; line-height: 1.85; white-space: pre-wrap; }
     .message-section { padding: 16px 22px 20px; background: #FFF8F2; border-top: 1px solid #EDE4DA; }
-    .message-label { font-size: 10px; letter-spacing: 0.12em; color: #B09A84; text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
+    .message-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: #6B4F3A;
+      border-radius: 20px;
+      padding: 3px 11px;
+      margin-bottom: 10px;
+    }
     .message-text { font-size: 13px; color: #5A4232; line-height: 1.85; font-style: italic; white-space: pre-wrap; }
     .message-text::before { content: '\201C'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-right: 2px; }
     .message-text::after { content: '\201D'; font-size: 22px; color: #D4A8C0; line-height: 0; vertical-align: -7px; margin-left: -2px; }
@@ -95,17 +115,15 @@
   ];
   let allMembers = [];
 
-  // JSON形式でスプレッドシートを取得（CSVより確実）
   async function loadSheet() {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
     const res = await fetch(url);
     const text = await res.text();
-    // Google の JSON は /*O_o*/ google.visualization.Query.setResponse(...) 形式
     const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
     const cols = json.table.cols.map(c => c.label);
     return json.table.rows
-      .filter(row => row && row.c && row.c[0] && row.c[0].v) // タイムスタンプがある行のみ
-      .filter(row => row.c[1] && row.c[1].v) // Discord名がある行のみ
+      .filter(row => row && row.c && row.c[0] && row.c[0].v)
+      .filter(row => row.c[1] && row.c[1].v)
       .map(row => {
         const obj = {};
         cols.forEach((col, i) => {
@@ -144,10 +162,10 @@
     const workTags = workstyle.split(/[,、，]/).map(s => s.trim()).filter(Boolean);
 
     const sections = [
-      joinDate    && { label: '入会時期',                             text: joinDate },
+      joinDate    && { label: '図解デザイナー講座入会時期',           text: joinDate },
+      goalBefore  && { label: '入会当時の目標',                       text: goalBefore },
       career      && { label: 'これまでの職歴',                       text: career },
       work        && { label: '現在の仕事内容',                       text: work },
-      goalBefore  && { label: '講座に入ったきっかけ・目指していたこと', text: goalBefore },
       goalNow     && { label: '今目指していること',                   text: goalNow },
       trouble     && { label: '今の悩み・課題',                       text: trouble },
       strength    && { label: '長所・得意なこと',                     text: strength },
